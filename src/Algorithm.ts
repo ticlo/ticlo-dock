@@ -207,6 +207,10 @@ export function converToPanel(source: TabData | PanelData): PanelData {
     return source;
   } else {
     let newPanel: PanelData = {tabs: [source], group: source.group, activeId: source.id};
+    if(source.parent && 'tabs' in source.parent) {
+      let {x, y, w, h} = source.parent;
+      newPanel = {...newPanel, x, y, w, h};
+    }
     source.parent = newPanel;
     return newPanel;
   }
