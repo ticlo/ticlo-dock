@@ -187,9 +187,12 @@ export class DockPanel extends React.PureComponent<Props, State> {
       }
     }
 
+    const maxX = this._movingX + this._movingW - (panelData.minWidth  || 0)
+    const maxY = this._movingY + this._movingH - (panelData.minHeight || 0)
+
     switch (this._movingCorner) {
       case 't': {
-        panelData.y = this._movingY + dy;
+        panelData.y = Math.min(maxY, this._movingY + dy);
         panelData.h = this._movingH - dy;
         break;
       }
@@ -198,7 +201,7 @@ export class DockPanel extends React.PureComponent<Props, State> {
         break;
       }
       case 'l': {
-        panelData.x = this._movingX + dx;
+        panelData.x = Math.min(maxX, this._movingX + dx);
         panelData.w = this._movingW - dx;
         break;
       }
@@ -207,20 +210,20 @@ export class DockPanel extends React.PureComponent<Props, State> {
         break;
       }
       case 'tl': {
-        panelData.x = this._movingX + dx;
+        panelData.x = Math.min(maxX, this._movingX + dx);
         panelData.w = this._movingW - dx;
-        panelData.y = this._movingY + dy;
+        panelData.y = Math.min(maxY, this._movingY + dy);
         panelData.h = this._movingH - dy;
         break;
       }
       case 'tr': {
         panelData.w = this._movingW + dx;
-        panelData.y = this._movingY + dy;
+        panelData.y = Math.min(maxY, this._movingY + dy);
         panelData.h = this._movingH - dy;
         break;
       }
       case 'bl': {
-        panelData.x = this._movingX + dx;
+        panelData.x = Math.min(maxX, this._movingX + dx);
         panelData.w = this._movingW - dx;
         panelData.h = this._movingH + dy;
         break;
