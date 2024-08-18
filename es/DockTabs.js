@@ -182,7 +182,7 @@ export class DockTabs extends React.PureComponent {
             }
         };
         this.renderTabBar = (props, TabNavList) => {
-            let { panelData, onPanelDragStart, onPanelDragMove, onPanelDragEnd } = this.props;
+            let { panelData, onPanelDragStart, onPanelDragMove, onPanelDragEnd, onPanelDragOver, onPanelDrop } = this.props;
             let { group: groupName, panelLock } = panelData;
             let group = this.context.getGroup(groupName);
             let { panelExtra } = group;
@@ -216,7 +216,7 @@ export class DockTabs extends React.PureComponent {
                     panelExtraContent = maxBtn;
                 }
             }
-            return (React.createElement(DockTabBar, Object.assign({ onDragStart: onPanelDragStart, onDragMove: onPanelDragMove, onDragEnd: onPanelDragEnd, TabNavList: TabNavList, isMaximized: panelData.parent.mode === 'maximize' }, props, { extra: panelExtraContent })));
+            return (React.createElement(DockTabBar, Object.assign({ onDragStart: onPanelDragStart, onDragMove: onPanelDragMove, onDragEnd: onPanelDragEnd, onDragOver: onPanelDragOver, onDrop: onPanelDrop, TabNavList: TabNavList, isMaximized: panelData.parent.mode === 'maximize' }, props, { extra: panelExtraContent })));
         };
         this.onTabChange = (activeId) => {
             this.props.panelData.activeId = activeId;

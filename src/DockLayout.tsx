@@ -254,7 +254,9 @@ export class DockLayout extends DockPortalManager implements DockContext {
         // panel target
         if (direction === 'middle') {
           layout = Algorithm.addTabToPanel(layout, source, target as PanelData);
+          console.log("Panel A");
         } else {
+          console.log("Panel B");
           let newPanel = Algorithm.converToPanel(source);
           layout = Algorithm.dockPanelToPanel(layout, newPanel, target as PanelData, direction);
         }
@@ -438,6 +440,24 @@ export class DockLayout extends DockPortalManager implements DockContext {
     if (element.classList.contains('dock-box')) {
       ratio = 0.3;
     }
+
+    if(direction === 'after-tab'){
+      const navWidth = 30;
+      const extraContentWidth = 30;
+
+      // search parents until we find .dock-nav
+      let parent = element.parentElement;
+      while(parent && !parent.classList.contains('dock-nav')){
+        parent = parent.parentElement;
+      }
+
+      if(parent){
+        const parentRect = parent.getBoundingClientRect();
+        // make sure left is lower then parent right
+        left = Math.min(left, parentRect.right - navWidth - extraContentWidth - width);
+      }
+    }
+
     switch (direction) {
       case 'float': {
         let x = (event.clientX - layoutRect.left) * scaleX;

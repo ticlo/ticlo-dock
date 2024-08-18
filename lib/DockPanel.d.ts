@@ -40,6 +40,8 @@ export declare class DockPanel extends React.PureComponent<Props, State> {
     onPanelCornerDragEnd: (e: DragState) => void;
     onFloatPointerDown: () => void;
     onPanelClicked: (e: React.MouseEvent) => void;
+    onPanelDragOver: (e: DragState) => void;
+    onPanelDrop: (e: DragState) => void;
     render(): React.ReactNode;
     _unmounted: boolean;
     componentWillUnmount(): void;

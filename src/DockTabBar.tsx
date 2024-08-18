@@ -37,12 +37,14 @@ interface DockTabBarProps extends TabNavListProps {
   onDragStart?: DragManager.DragHandler;
   onDragMove?: DragManager.DragHandler;
   onDragEnd?: DragManager.DragHandler;
+  onDragOver?: DragManager.DragHandler;
+  onDrop?: DragManager.DropHandler;
   TabNavList: React.ComponentType<TabNavListProps>;
 }
 
 export function DockTabBar(props: DockTabBarProps) {
   const {
-    onDragStart, onDragMove, onDragEnd, TabNavList, isMaximized,
+    onDragStart, onDragMove, onDragEnd, onDragOver, onDrop, TabNavList, isMaximized,
     ...restProps
   } = props;
 
@@ -68,6 +70,8 @@ export function DockTabBar(props: DockTabBarProps) {
     <DragDropDiv onDragStartT={onDragStart}
                  onDragMoveT={onDragMove}
                  onDragEndT={onDragEnd}
+                 onDragOverT={onDragOver}
+                 onDropT={onDrop}
                  role="tablist"
                  className="dock-bar"
                  onKeyDown={onKeyDown}

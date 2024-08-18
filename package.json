@@ -75,6 +75,7 @@
     "build-doc": "typedoc",
     "build-www": "ts-node tool/build-www",
     "build-es": "tsc --module es2020 --outDir ./es",
-    "build-lib": "tsc --outDir ./lib"
+    "build-lib": "tsc --outDir ./lib",
+    "watch-lib": "tsc --watch --outDir ./lib"
   }
 }

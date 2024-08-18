@@ -7,6 +7,7 @@ import { DockDropLayer } from "./DockDropLayer";
 import { getFloatPanelSize, nextZIndex } from "./Algorithm";
 import { DockDropEdge } from "./DockDropEdge";
 import { groupClassNames } from "./Utils";
+import * as DragManager from "./dragdrop/DragManager";
 import classNames from "classnames";
 export class DockPanel extends React.PureComponent {
     constructor() {
@@ -92,6 +93,9 @@ export class DockPanel extends React.PureComponent {
         };
         this.onPanelHeaderDragEnd = (e) => {
             var _a;
+            if (this._unmounted) {
+                return;
+            }
             this.setState({ draggingHeader: false });
             if (e.dropped === false) {
                 let { panelData } = this.props;
@@ -204,6 +208,84 @@ export class DockPanel extends React.PureComponent {
                 this._ref.querySelector('.dock-bar').focus();
             }
         };
+        this.onPanelDragOver = (e) => {
+            var _a, _b;
+            let dockId = this.context.getDockId();
+            let tab = DragManager.DragState.getData('tab', dockId);
+            let panel = DragManager.DragState.getData('panel', dockId);
+            let group;
+            if (tab) {
+                panel = tab.parent;
+                group = tab.group;
+            }
+            else {
+                // drag whole panel
+                if (!panel) {
+                    return;
+                }
+                if (panel === null || panel === void 0 ? void 0 : panel.panelLock) {
+                    e.reject();
+                    return;
+                }
+                group = panel.group;
+            }
+            const tabGroup = this.context.getGroup(group);
+            const thisPanelData = this.props.panelData;
+            const lastTab = thisPanelData.tabs[thisPanelData.tabs.length - 1];
+            const direction = 'after-tab';
+            const dockTabElements = this._ref.querySelectorAll('.dock-tab');
+            let rectElement = this._ref.querySelector('.dock-nav-list');
+            if (dockTabElements.length) {
+                const dockTabLastElement = dockTabElements[dockTabElements.length - 1];
+                rectElement = dockTabLastElement.querySelector('.dock-tab-hit-area');
+            }
+            if (!lastTab) {
+                e.accept();
+                this.context.setDropRect(rectElement, direction, this);
+            }
+            else if (e.clientX - this._ref.offsetLeft < 30) {
+                // do not allow drop on the left side of the tab
+            }
+            else if (group !== (lastTab === null || lastTab === void 0 ? void 0 : lastTab.group)) {
+                e.reject();
+            }
+            else if ((tabGroup === null || tabGroup === void 0 ? void 0 : tabGroup.floatable) === 'singleTab' && ((_b = (_a = lastTab.parent) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.mode) === 'float') {
+                e.reject();
+            }
+            else if (tab && tab !== lastTab) {
+                this.context.setDropRect(rectElement, direction, this);
+                e.accept('');
+            }
+            else if (panel && panel !== (lastTab === null || lastTab === void 0 ? void 0 : lastTab.parent)) {
+                this.context.setDropRect(rectElement, direction, this);
+                e.accept('');
+            }
+        };
+        this.onPanelDrop = (e) => {
+            let dockId = this.context.getDockId();
+            let panel;
+            let tab = DragManager.DragState.getData('tab', dockId);
+            if (tab) {
+                panel = tab.parent;
+            }
+            else {
+                panel = DragManager.DragState.getData('panel', dockId);
+            }
+            let direction = 'after-tab';
+            const thisPanelData = this.props.panelData;
+            const lastTab = thisPanelData.tabs[thisPanelData.tabs.length - 1];
+            const target = lastTab ? lastTab : thisPanelData;
+            if (!lastTab) {
+                direction = 'middle';
+            }
+            if (tab && tab !== lastTab) {
+                this.context.dockMove(tab, target, direction);
+            }
+            else if (panel && panel !== (lastTab === null || lastTab === void 0 ? void 0 : lastTab.parent)) {
+                console.log("dock move panel", panel, target, direction);
+                this.context.dockMove(panel, target, direction);
+            }
+        };
         this._unmounted = false;
     }
     static set droppingPanel(panel) {
@@ -290,7 +372,7 @@ export class DockPanel extends React.PureComponent {
             }
         }
         return (React.createElement(DragDropDiv, { getRef: this.getRef, className: cls, style: style, "data-dockid": id, onDragOverT: isFloat ? null : this.onDragOver, onClick: this.onPanelClicked },
-            React.createElement(DockTabs, { panelData: panelData, onPanelDragStart: onPanelHeaderDragStart, onPanelDragMove: this.onPanelHeaderDragMove, onPanelDragEnd: this.onPanelHeaderDragEnd }),
+            React.createElement(DockTabs, { panelData: panelData, onPanelDragStart: onPanelHeaderDragStart, onPanelDragMove: this.onPanelHeaderDragMove, onPanelDragEnd: this.onPanelHeaderDragEnd, onPanelDragOver: this.onPanelDragOver, onPanelDrop: this.onPanelDrop }),
             isFloat ?
                 [
                     React.createElement(DragDropDiv, { key: "drag-size-t", className: "dock-panel-drag-size dock-panel-drag-size-t", onDragStartT: this.onPanelCornerDragT, onDragMoveT: this.onPanelCornerDragMove, onDragEndT: this.onPanelCornerDragEnd }),

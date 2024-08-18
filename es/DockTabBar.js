@@ -40,7 +40,7 @@ function checkLocalTabMove(key, tabbar) {
     return false;
 }
 export function DockTabBar(props) {
-    const { onDragStart, onDragMove, onDragEnd, TabNavList, isMaximized } = props, restProps = __rest(props, ["onDragStart", "onDragMove", "onDragEnd", "TabNavList", "isMaximized"]);
+    const { onDragStart, onDragMove, onDragEnd, onDragOver, onDrop, TabNavList, isMaximized } = props, restProps = __rest(props, ["onDragStart", "onDragMove", "onDragEnd", "onDragOver", "onDrop", "TabNavList", "isMaximized"]);
     const layout = React.useContext(DockContextType);
     const ref = React.useRef();
     const getRef = (div) => {
@@ -55,6 +55,6 @@ export function DockTabBar(props) {
             e.preventDefault();
         }
     };
-    return (React.createElement(DragDropDiv, { onDragStartT: onDragStart, onDragMoveT: onDragMove, onDragEndT: onDragEnd, role: "tablist", className: "dock-bar", onKeyDown: onKeyDown, getRef: getRef, tabIndex: -1 },
+    return (React.createElement(DragDropDiv, { onDragStartT: onDragStart, onDragMoveT: onDragMove, onDragEndT: onDragEnd, onDragOverT: onDragOver, onDropT: onDrop, role: "tablist", className: "dock-bar", onKeyDown: onKeyDown, getRef: getRef, tabIndex: -1 },
         React.createElement(TabNavList, Object.assign({}, restProps))));
 }

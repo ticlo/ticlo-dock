@@ -25,6 +25,8 @@ interface Props {
     onPanelDragStart: DragManager.DragHandler;
     onPanelDragMove: DragManager.DragHandler;
     onPanelDragEnd: DragManager.DragHandler;
+    onPanelDragOver: DragManager.DragHandler;
+    onPanelDrop: DragManager.DragHandler;
 }
 export declare class DockTabs extends React.PureComponent<Props> {
     static contextType: React.Context<DockContext>;

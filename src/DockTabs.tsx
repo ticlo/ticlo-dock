@@ -190,6 +190,8 @@ interface Props {
   onPanelDragStart: DragManager.DragHandler;
   onPanelDragMove: DragManager.DragHandler;
   onPanelDragEnd: DragManager.DragHandler;
+  onPanelDragOver: DragManager.DragHandler;
+  onPanelDrop: DragManager.DragHandler;
 }
 
 export class DockTabs extends React.PureComponent<Props> {
@@ -272,7 +274,7 @@ export class DockTabs extends React.PureComponent<Props> {
   }
 
   renderTabBar = (props: any, TabNavList: React.ComponentType) => {
-    let {panelData, onPanelDragStart, onPanelDragMove, onPanelDragEnd} = this.props;
+    let {panelData, onPanelDragStart, onPanelDragMove, onPanelDragEnd, onPanelDragOver, onPanelDrop} = this.props;
     let {group: groupName, panelLock} = panelData;
     let group = this.context.getGroup(groupName);
     let {panelExtra} = group;
@@ -313,7 +315,7 @@ export class DockTabs extends React.PureComponent<Props> {
       }
     }
     return (
-      <DockTabBar onDragStart={onPanelDragStart} onDragMove={onPanelDragMove} onDragEnd={onPanelDragEnd}
+      <DockTabBar onDragStart={onPanelDragStart} onDragMove={onPanelDragMove} onDragEnd={onPanelDragEnd} onDragOver={onPanelDragOver} onDrop={onPanelDrop}
                   TabNavList={TabNavList} isMaximized={panelData.parent.mode === 'maximize'} {...props}
                   extra={panelExtraContent}/>
     );
