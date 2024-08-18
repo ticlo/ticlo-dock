@@ -368,7 +368,7 @@ export interface DockContext {
   /**
    * Find PanelData or TabData by id
    */
-  find(id: string, filter?: Filter): PanelData | TabData | BoxData | undefined;
+  find(id: string | ((item: PanelData | TabData | BoxData) => boolean), filter?: Filter): PanelData | TabData | BoxData | undefined;
 
   /**
    * Update a tab with new TabData

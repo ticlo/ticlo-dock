@@ -122,7 +122,7 @@ dockMove(source: TabData | PanelData, target: string | TabData | PanelData | Box
 find PanelData or TabData by id
 
 ```typescript
-find(id: string): PanelData | TabData;
+find(id: string | ((item: PanelData | TabData | BoxData) => boolean), filter?: Filter): PanelData | TabData | BoxData | undefined;
 ```
 
 ### updateTab [🗎](https://ticlo.github.io/rc-dock/classes/docklayout.docklayout-1.html#updatetab)

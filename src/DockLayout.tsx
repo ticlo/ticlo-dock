@@ -277,7 +277,7 @@ export class DockLayout extends DockPortalManager implements DockContext {
   }
 
   /** @inheritDoc */
-  find(id: string, filter?: Algorithm.Filter): PanelData | TabData | BoxData | undefined {
+  find(id: string | ((item: PanelData | TabData | BoxData) => boolean), filter?: Algorithm.Filter): PanelData | TabData | BoxData | undefined {
     return Algorithm.find(this.getLayout(), id, filter);
   }
 

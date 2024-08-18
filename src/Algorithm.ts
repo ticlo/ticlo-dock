@@ -79,14 +79,18 @@ export function nextZIndex(current?: number): number {
   return ++_zCount;
 }
 
+function compareFindId(item: PanelData | TabData | BoxData, id: string | ((item: PanelData | TabData | BoxData) => boolean)): boolean {
+  return item && (typeof id === 'function' ? id(item) : item.id === id);
+}
 
-function findInPanel(panel: PanelData, id: string, filter: Filter): PanelData | TabData | undefined {
-  if (panel.id === id && (filter & Filter.Panel)) {
+
+function findInPanel(panel: PanelData, id: string | ((item: PanelData | TabData | BoxData) => boolean), filter: Filter): PanelData | TabData | undefined {
+  if (compareFindId(panel, id) && (filter & Filter.Panel)) {
     return panel;
   }
   if (filter & Filter.Tab) {
     for (let tab of panel.tabs) {
-      if (tab.id === id) {
+      if (compareFindId(tab, id)) {
         return tab;
       }
     }
@@ -94,9 +98,9 @@ function findInPanel(panel: PanelData, id: string, filter: Filter): PanelData | 
   return undefined;
 }
 
-function findInBox(box: BoxData | undefined, id: string, filter: Filter): PanelData | TabData | BoxData | undefined {
+function findInBox(box: BoxData | undefined, id: string | ((item: PanelData | TabData | BoxData) => boolean), filter: Filter): PanelData | TabData | BoxData | undefined {
   let result: PanelData | TabData | BoxData | undefined;
-  if ((filter | Filter.Box) && box?.id === id) {
+  if ((filter | Filter.Box) && compareFindId(box, id)) {
     return box;
   }
   if (!box?.children) {
@@ -133,7 +137,7 @@ export enum Filter {
 }
 
 
-export function find(layout: LayoutData, id: string, filter: Filter = Filter.AnyTabPanel): PanelData | TabData | BoxData | undefined {
+export function find(layout: LayoutData, id: string | ((item: PanelData | TabData | BoxData) => boolean), filter: Filter = Filter.AnyTabPanel): PanelData | TabData | BoxData | undefined {
   let result: PanelData | TabData | BoxData | undefined;
 
   if (filter & Filter.Docked) {

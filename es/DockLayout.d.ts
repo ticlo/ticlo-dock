@@ -111,7 +111,7 @@ export declare class DockLayout extends DockPortalManager implements DockContext
      */
     dockMove(source: TabData | PanelData, target: string | TabData | PanelData | BoxData | null, direction: DropDirection, floatPosition?: FloatPosition): void;
     /** @inheritDoc */
-    find(id: string, filter?: Algorithm.Filter): PanelData | TabData | BoxData | undefined;
+    find(id: string | ((item: PanelData | TabData | BoxData) => boolean), filter?: Algorithm.Filter): PanelData | TabData | BoxData | undefined;
     /** @ignore */
     getLayoutSize(): LayoutSize;
     /** @inheritDoc */

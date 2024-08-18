@@ -16,7 +16,7 @@ export declare enum Filter {
     AnyTabPanel = 123,
     All = 127
 }
-export declare function find(layout: LayoutData, id: string, filter?: Filter): PanelData | TabData | BoxData | undefined;
+export declare function find(layout: LayoutData, id: string | ((item: PanelData | TabData | BoxData) => boolean), filter?: Filter): PanelData | TabData | BoxData | undefined;
 export declare function addNextToTab(layout: LayoutData, source: TabData | PanelData, target: TabData, direction: DropDirection): LayoutData;
 export declare function addTabToPanel(layout: LayoutData, source: TabData | PanelData, panel: PanelData, idx?: number): LayoutData;
 export declare function converToPanel(source: TabData | PanelData): PanelData;
